@@ -79,11 +79,34 @@ public class Factura {
                 .append("\nCliente: ")
                 .append(this.cliente.getNombre())
                 .append("\t NIF: ")
+                .append(this.cliente.getNif())
                 .append("\nDescripción: ")
-                .append("\n")
-                .append("\n#\tNombre\t$\tCant.\tTota\n");
+                .append(this.descripcion)
+                .append("\n");
 
-        SimpleDateFormat df = new SimpleDateFormat()
+        SimpleDateFormat df = new SimpleDateFormat("dd 'de' MMMM, yyyy");
+        sb.append("Fecha Emisión: ")
+                .append(df.format(this.fecha))
+                .append("\n")
+                .append("\n#\tNombre\t$\tCant.\tTotal\n");
+
+        for(ItemFactura item: this.items){
+            if(item == null) {
+                continue;
+            }
+            sb.append(item.getProducto().getCodigo())
+                    .append("\t")
+                    .append(item.getProducto().getNombre())
+                    .append("\t")
+                    .append(item.getProducto().getPrecio())
+                    .append("\t")
+                    .append(item.getCantidad())
+                    .append("\t")
+                    .append(item.calcularImporte())
+                    .append("\n");
+        }
+        sb.append("\nGran Total: ")
+                .append(calcularTotal());
 
         return sb.toString();
     }
